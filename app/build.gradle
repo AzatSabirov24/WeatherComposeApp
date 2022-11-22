@@ -37,6 +37,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        freeCompilerArgs += [
+                "-Xjvm-default=all",
+        ]
     }
     buildFeatures {
         compose true
@@ -69,6 +72,10 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10'
     kapt 'com.google.dagger:dagger-compiler:2.44.2'
     testImplementation 'junit:junit:4.13.2'
+
+    // Location Services
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"

@@ -1,6 +1,6 @@
 package com.example.weathercomposeneco.di
 
-import com.example.weathercomposeneco.network.WeatherApi
+import com.example.weathercomposeneco.data.network.WeatherApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class NetworkModule {
+object NetworkModule {
 
     @Provides
     @Singleton
@@ -27,8 +27,5 @@ class NetworkModule {
         .build()
         .create(WeatherApi::class.java)
 
-    companion object {
-
-        private const val BASE_URL = "https://api.weatherapi.com/"
-    }
+    private const val BASE_URL = "https://api.weatherapi.com/"
 }
