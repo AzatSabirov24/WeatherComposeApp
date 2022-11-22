@@ -3,9 +3,13 @@ package com.example.weathercomposeneco.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -19,7 +23,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,7 +30,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.weathercomposeneco.R
+import com.example.weathercomposeneco.data.WeatherDto
+import com.example.weathercomposeneco.ui.theme.BlueDark
 import com.example.weathercomposeneco.ui.theme.BlueLight
+import com.example.weathercomposeneco.ui.theme.WhiteMain
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
@@ -61,9 +67,9 @@ fun MainCard() {
                         ),
                         text = "21.11.2022 10:54",
                         style = TextStyle(
-                            fontSize = 15.sp
+                            fontSize = 20.sp
                         ),
-                        color = Color.White
+                        color = BlueDark
                     )
                     AsyncImage(
                         modifier = Modifier
@@ -75,26 +81,29 @@ fun MainCard() {
                         contentDescription = "image weather condition"
                     )
                 }
+                Spacer(
+                    modifier = Modifier.padding(8.dp)
+                )
                 Text(
                     text = "Shymkent",
                     style = TextStyle(
                         fontSize = 24.sp
                     ),
-                    color = Color.White
+                    color = WhiteMain
                 )
                 Text(
                     text = "23℃",
                     style = TextStyle(
                         fontSize = 72.sp
                     ),
-                    color = Color.White
+                    color = BlueDark
                 )
                 Text(
                     text = "Sunny",
                     style = TextStyle(
                         fontSize = 20.sp
                     ),
-                    color = Color.White
+                    color = WhiteMain
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -107,15 +116,15 @@ fun MainCard() {
                                 id = R.drawable.ic_search_24
                             ),
                             contentDescription = "icon search",
-                            tint = Color.White
+                            tint = WhiteMain
                         )
                     }
                     Text(
                         text = "23℃/13℃",
                         style = TextStyle(
-                            fontSize = 16.sp
+                            fontSize = 20.sp
                         ),
-                        color = Color.White
+                        color = WhiteMain
                     )
                     IconButton(
                         onClick = { /* TODO */ }) {
@@ -124,7 +133,7 @@ fun MainCard() {
                                 id = R.drawable.ic_sync_24
                             ),
                             contentDescription = "icon search",
-                            tint = Color.White
+                            tint = WhiteMain
                         )
                     }
                 }
@@ -164,11 +173,12 @@ fun TabLayout() {
                     )
                 )
             },
-            backgroundColor = BlueLight
+            backgroundColor = BlueLight,
+            contentColor = BlueDark
         ) {
             tabList.forEachIndexed { pageIndex, text ->
                 Tab(
-                    selected = false,
+                    selected = true,
                     onClick = {
                         coroutineScope.launch {
                             pagerState.animateScrollToPage(
@@ -187,9 +197,38 @@ fun TabLayout() {
         HorizontalPager(
             count = tabList.size,
             state = pagerState,
-            modifier = Modifier.weight(1.0f)
-        ) {
-
+            modifier = Modifier.weight(1.0f),
+        ) { index ->
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                itemsIndexed(
+                    listOf(
+                        WeatherDto(
+                            city = "Shymkent",
+                            time = "12:00",
+                            currentTemp = "24℃",
+                            condition = "Sunny",
+                            icon = "https://cdn.weatherapi.com/weather/64x64/day/176.png",
+                            maxTemp = "",
+                            minTemp = "",
+                            hours = ""
+                        ),
+                        WeatherDto(
+                            city = "Shymkent",
+                            time = "12:00",
+                            currentTemp = "",
+                            condition = "Sunny",
+                            icon = "https://cdn.weatherapi.com/weather/64x64/day/176.png",
+                            maxTemp = "24℃",
+                            minTemp = "12℃",
+                            hours = "5"
+                        )
+                    )
+                ) { _, item ->
+                    ListItem(item = item)
+                }
+            }
         }
     }
 }
