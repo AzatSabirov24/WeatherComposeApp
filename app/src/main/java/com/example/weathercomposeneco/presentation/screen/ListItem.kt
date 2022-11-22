@@ -17,6 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.weathercomposeneco.data.model.Forecastday
+import com.example.weathercomposeneco.data.model.Weather
 import com.example.weathercomposeneco.data.model.WeatherDto
 import com.example.weathercomposeneco.presentation.ui.theme.BlueDark
 import com.example.weathercomposeneco.presentation.ui.theme.BlueLight
@@ -24,7 +26,7 @@ import com.example.weathercomposeneco.presentation.ui.theme.WhiteMain
 
 @Preview(showBackground = true)
 @Composable
-fun ListItem(item: WeatherDto) = with(item){
+fun ListItem(item: Weather) = with(item){
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,16 +46,16 @@ fun ListItem(item: WeatherDto) = with(item){
         ) {
             Column {
                 Text(
-                    text = time,
+                    text = forecast.forecastday.forEach { it.hour }.toString(),
                     color = BlueDark
                 )
                 Text(
-                    text = condition,
+                    text = current.condition.text,
                     color = WhiteMain
                 )
             }
             Text(
-                text = currentTemp.ifEmpty { "$maxTemp/$minTemp" },
+                text = "11",
                 color = BlueDark,
                 style = TextStyle(
                     fontSize = 24.sp
@@ -65,7 +67,7 @@ fun ListItem(item: WeatherDto) = with(item){
                     .padding(
                         end = 8.dp
                     ),
-                model = "https:$icon",
+                model = "https:",
                 contentDescription = "image weather condition"
             )
         }

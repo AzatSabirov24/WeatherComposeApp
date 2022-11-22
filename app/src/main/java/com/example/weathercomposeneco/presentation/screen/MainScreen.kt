@@ -30,7 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.weathercomposeneco.R
-import com.example.weathercomposeneco.data.model.WeatherDto
+import com.example.weathercomposeneco.data.model.Forecastday
+import com.example.weathercomposeneco.domain.model.WeatherData
+import com.example.weathercomposeneco.presentation.WeatherState
 import com.example.weathercomposeneco.presentation.ui.theme.BlueDark
 import com.example.weathercomposeneco.presentation.ui.theme.BlueLight
 import com.example.weathercomposeneco.presentation.ui.theme.WhiteMain
@@ -42,99 +44,101 @@ import kotlinx.coroutines.launch
 
 @Preview(showBackground = true)
 @Composable
-fun MainCard() {
-    Column(
-        modifier = Modifier.padding(4.dp)
-    ) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            backgroundColor = BlueLight,
-            elevation = 0.dp,
-            shape = RoundedCornerShape(10.dp)
+fun MainCard(state: WeatherState) {
+    state.weatherInfo?.currentWeather?.let { currentWeather ->
+        Column(
+            modifier = Modifier.padding(4.dp)
         ) {
-            Column(
+            Card(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = CenterHorizontally
+                backgroundColor = BlueLight,
+                elevation = 0.dp,
+                shape = RoundedCornerShape(10.dp)
             ) {
-                Row(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalAlignment = CenterHorizontally
                 ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(
+                                top = 8.dp,
+                                start = 8.dp
+                            ),
+                            text = "21.11.2022 10:54",
+                            style = TextStyle(
+                                fontSize = 20.sp
+                            ),
+                            color = BlueDark
+                        )
+                        AsyncImage(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .padding(
+                                    end = 8.dp
+                                ),
+                            model = "https://cdn.weatherapi.com/weather/64x64/day/116.png",
+                            contentDescription = "image weather condition"
+                        )
+                    }
+                    Spacer(
+                        modifier = Modifier.padding(8.dp)
+                    )
                     Text(
-                        modifier = Modifier.padding(
-                            top = 8.dp,
-                            start = 8.dp
-                        ),
-                        text = "21.11.2022 10:54",
+                        text = "Shymkent",
                         style = TextStyle(
-                            fontSize = 20.sp
+                            fontSize = 24.sp
+                        ),
+                        color = WhiteMain
+                    )
+                    Text(
+                        text = currentWeather.temperature.toString(),
+                        style = TextStyle(
+                            fontSize = 72.sp
                         ),
                         color = BlueDark
                     )
-                    AsyncImage(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .padding(
-                                end = 8.dp
-                            ),
-                        model = "https://cdn.weatherapi.com/weather/64x64/day/116.png",
-                        contentDescription = "image weather condition"
-                    )
-                }
-                Spacer(
-                    modifier = Modifier.padding(8.dp)
-                )
-                Text(
-                    text = "Shymkent",
-                    style = TextStyle(
-                        fontSize = 24.sp
-                    ),
-                    color = WhiteMain
-                )
-                Text(
-                    text = "23℃",
-                    style = TextStyle(
-                        fontSize = 72.sp
-                    ),
-                    color = BlueDark
-                )
-                Text(
-                    text = "Sunny",
-                    style = TextStyle(
-                        fontSize = 20.sp
-                    ),
-                    color = WhiteMain
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    IconButton(
-                        onClick = { /* TODO */ }) {
-                        Icon(
-                            painterResource(
-                                id = R.drawable.ic_search_24
-                            ),
-                            contentDescription = "icon search",
-                            tint = WhiteMain
-                        )
-                    }
                     Text(
-                        text = "23℃/13℃",
+                        text = "Sunny",
                         style = TextStyle(
                             fontSize = 20.sp
                         ),
                         color = WhiteMain
                     )
-                    IconButton(
-                        onClick = { /* TODO */ }) {
-                        Icon(
-                            painterResource(
-                                id = R.drawable.ic_sync_24
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        IconButton(
+                            onClick = { /* TODO */ }) {
+                            Icon(
+                                painterResource(
+                                    id = R.drawable.ic_search_24
+                                ),
+                                contentDescription = "icon search",
+                                tint = WhiteMain
+                            )
+                        }
+                        Text(
+                            text = "23℃/13℃",
+                            style = TextStyle(
+                                fontSize = 20.sp
                             ),
-                            contentDescription = "icon search",
-                            tint = WhiteMain
+                            color = WhiteMain
                         )
+                        IconButton(
+                            onClick = { /* TODO */ }) {
+                            Icon(
+                                painterResource(
+                                    id = R.drawable.ic_sync_24
+                                ),
+                                contentDescription = "icon search",
+                                tint = WhiteMain
+                            )
+                        }
                     }
                 }
             }
@@ -144,7 +148,9 @@ fun MainCard() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TabLayout() {
+fun TabLayout(
+//    forecastDay: List<Forecastday>
+) {
     val tabList = listOf(
         "HOURS",
         "DAYS"
@@ -202,32 +208,11 @@ fun TabLayout() {
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                itemsIndexed(
-                    listOf(
-                        WeatherDto(
-                            city = "Shymkent",
-                            time = "12:00",
-                            currentTemp = "24℃",
-                            condition = "Sunny",
-                            icon = "https://cdn.weatherapi.com/weather/64x64/day/176.png",
-                            maxTemp = "",
-                            minTemp = "",
-                            hours = ""
-                        ),
-                        WeatherDto(
-                            city = "Shymkent",
-                            time = "12:00",
-                            currentTemp = "",
-                            condition = "Sunny",
-                            icon = "https://cdn.weatherapi.com/weather/64x64/day/176.png",
-                            maxTemp = "24℃",
-                            minTemp = "12℃",
-                            hours = "5"
-                        )
-                    )
-                ) { _, item ->
-                    ListItem(item = item)
-                }
+//                itemsIndexed(
+//                    forecastDay
+//                ) { _, item ->
+//                    ListItem(item = item)
+//                }
             }
         }
     }

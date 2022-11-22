@@ -10,12 +10,15 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.example.weathercomposeneco.R
 import com.example.weathercomposeneco.data.network.WeatherApi
+import com.example.weathercomposeneco.domain.model.WeatherData
 import com.example.weathercomposeneco.presentation.screen.MainCard
 import com.example.weathercomposeneco.presentation.screen.TabLayout
 import com.example.weathercomposeneco.presentation.ui.theme.WeatherComposeNecoTheme
@@ -44,6 +47,9 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             WeatherComposeNecoTheme {
+                val daysList = remember {
+                    mutableStateOf(listOf<WeatherData>())
+                }
                 Image(
                     painter = painterResource(
                         id = R.drawable.weather_bg
@@ -55,7 +61,7 @@ class MainActivity : ComponentActivity() {
                     contentScale = ContentScale.FillBounds
                 )
                 Column {
-                    MainCard()
+                    MainCard(viewModel.state)
                     TabLayout()
                 }
             }

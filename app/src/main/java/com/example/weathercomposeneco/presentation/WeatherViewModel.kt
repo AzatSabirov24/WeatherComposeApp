@@ -18,7 +18,7 @@ class WeatherViewModel @Inject constructor(
 ) : ViewModel() {
 
     var state by mutableStateOf(WeatherState())
-    private set
+        private set
 
     fun fetchWeather() {
         viewModelScope.launch {
@@ -26,9 +26,9 @@ class WeatherViewModel @Inject constructor(
                 isLoading = true,
                 error = null
             )
-            val result = repository.fetchWeather("Shymkent", "5")
-            Log.d("fetchWeather", "${result.data}")
-            state = when(result) {
+            val result = repository.fetchWeather("Kazan", "5")
+            Log.d("fetchWeather", "fetchWeather() called: ${result.data}")
+            state = when (result) {
                 is Resource.Success -> state.copy(
                     isLoading = false,
                     weatherInfo = result.data,
