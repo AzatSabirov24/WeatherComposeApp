@@ -1,4 +1,4 @@
-package com.example.weathercomposeneco.data.model
+package com.example.weathercomposeneco.data.model1
 
 data class Day(
     val avghumidity: Double,

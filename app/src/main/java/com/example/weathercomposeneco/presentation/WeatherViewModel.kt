@@ -1,6 +1,5 @@
 package com.example.weathercomposeneco.presentation
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -26,18 +25,29 @@ class WeatherViewModel @Inject constructor(
                 isLoading = true,
                 error = null
             )
-            val result = repository.fetchWeather("Kazan", "5")
-            Log.d("fetchWeather", "fetchWeather() called: ${result.data}")
-            state = when (result) {
-                is Resource.Success -> state.copy(
+            locationTracker.getCurrentLocation()
+                ?.let { location ->
+                    when (val result =
+                        repository.fetchWeather(location.latitude, location.longitude)) {
+                        is Resource.Success -> {
+                            state = state.copy(
+                                weatherInfo = result.data,
+                                isLoading = false,
+                                error = null
+                            )
+                        }
+                        is Resource.Error -> {
+                            state = state.copy(
+                                weatherInfo = null,
+                                isLoading = false,
+                                error = result.errorMessage
+                            )
+                        }
+                    }
+                } ?: kotlin.run {
+                state = state.copy(
                     isLoading = false,
-                    weatherInfo = result.data,
-                    error = null
-                )
-                is Resource.Error -> state.copy(
-                    isLoading = false,
-                    weatherInfo = null,
-                    error = result.errorMessage
+                    error = "Couldn't retrieve location. Make sure to grant permission and enable GPS."
                 )
             }
         }

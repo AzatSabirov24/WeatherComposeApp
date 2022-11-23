@@ -8,19 +8,28 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.example.weathercomposeneco.R
 import com.example.weathercomposeneco.data.network.WeatherApi
-import com.example.weathercomposeneco.domain.model.WeatherData
-import com.example.weathercomposeneco.presentation.screen.MainCard
-import com.example.weathercomposeneco.presentation.screen.TabLayout
+import com.example.weathercomposeneco.domain.model1.WeatherInfo
+import com.example.weathercomposeneco.presentation.ui.WeatherCard
+import com.example.weathercomposeneco.presentation.ui.theme.BlueLight
 import com.example.weathercomposeneco.presentation.ui.theme.WeatherComposeNecoTheme
 import javax.inject.Inject
 
@@ -47,9 +56,6 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             WeatherComposeNecoTheme {
-                val daysList = remember {
-                    mutableStateOf(listOf<WeatherData>())
-                }
                 Image(
                     painter = painterResource(
                         id = R.drawable.weather_bg
@@ -60,9 +66,34 @@ class MainActivity : ComponentActivity() {
                         .alpha(0.85f),
                     contentScale = ContentScale.FillBounds
                 )
-                Column {
-                    MainCard(viewModel.state)
-                    TabLayout()
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(BlueLight)
+                    ) {
+                        WeatherCard(
+                            state = viewModel.state,
+                            backgroundColor = BlueLight
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+//                        WeatherForecast(state = viewModel.state)
+                    }
+                    if(viewModel.state.isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                    viewModel.state.error?.let { error ->
+//                        Text(
+//                            text = error,
+//                            color = Color.Red,
+//                            textAlign = TextAlign.Center,
+//                            modifier = Modifier.align(Alignment.Center)
+//                        )
+                    }
                 }
             }
         }

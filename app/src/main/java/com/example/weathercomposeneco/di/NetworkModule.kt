@@ -27,5 +27,5 @@ object NetworkModule {
         .build()
         .create(WeatherApi::class.java)
 
-    private const val BASE_URL = "https://api.weatherapi.com/"
+    private const val BASE_URL = "https://api.open-meteo.com/"
 }

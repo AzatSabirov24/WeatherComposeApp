@@ -1,25 +1,12 @@
 package com.example.weathercomposeneco.domain.model
 
+import java.time.LocalDateTime
+
 data class WeatherData(
-    val currentWeather: CurrentWeather
+    val time: LocalDateTime,
+    val temperatureCelsius: Double,
+    val pressure: Double,
+    val windSpeed: Double,
+    val humidity: Double,
+    val weatherType: WeatherType
 )
-
-//data class ForecastDays(
-//    days: List<>
-//)
-//
-//data class ForecastWeather(
-//    val days: List<>
-//)
-
-data class CurrentWeather(
-//    val condition: Condition,
-    val temperature: Double
-)
-
-data class Condition(
-    val icon: String,
-    val text: String
-)
-
-

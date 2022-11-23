@@ -1,13 +1,8 @@
 package com.example.weathercomposeneco.data.model
 
-data class WeatherDto(
+import com.google.gson.annotations.SerializedName
 
-    val city: String,
-    val time: String,
-    val currentTemp: String,
-    val condition: String,
-    val icon: String,
-    val maxTemp: String,
-    val minTemp: String,
-    val hours: String
+data class WeatherDto(
+    @SerializedName("hourly")
+    val weatherData: WeatherDataDto
 )

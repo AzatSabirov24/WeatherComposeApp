@@ -17,9 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.weathercomposeneco.data.model.Forecastday
-import com.example.weathercomposeneco.data.model.Weather
-import com.example.weathercomposeneco.data.model.WeatherDto
+import com.example.weathercomposeneco.data.model1.Weather
 import com.example.weathercomposeneco.presentation.ui.theme.BlueDark
 import com.example.weathercomposeneco.presentation.ui.theme.BlueLight
 import com.example.weathercomposeneco.presentation.ui.theme.WhiteMain

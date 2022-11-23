@@ -1,14 +1,13 @@
 package com.example.weathercomposeneco.presentation.ui
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.weathercomposeneco.domain.model.WeatherData
+import com.example.weathercomposeneco.domain.model1.WeatherInfo
 
 @Composable
 fun HourlyWeatherDisplay(
-    weatherData: WeatherData,
+    weatherInfo: WeatherInfo,
     modifier: Modifier
 ) {
     Row {
