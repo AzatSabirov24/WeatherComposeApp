@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -69,64 +70,78 @@ class MainActivity : ComponentActivity() {
                     )
                     when {
                         viewModel.state.isLoading -> {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    modifier = Modifier
-                                        .padding(80.dp),
-                                    text = "Мама, привет!",
-                                    fontSize = 48.sp,
-                                    color = BlueDark,
-                                    textAlign = TextAlign.Center
-                                )
-                                Image(
-                                    painter = painterResource(
-                                        id = R.drawable.me
-                                    ),
-                                    contentDescription = null,
-                                    modifier = Modifier.clip(RoundedCornerShape(16.dp))
-                                )
-                                Spacer(
-                                    modifier = Modifier.padding(
-                                        top = 24.dp
-                                    )
-                                )
-                                CircularProgressIndicator(
-                                    color = BlueDark
-                                )
-                            }
+                            LoadingWeather(text = "Мама, привет!")
                         }
                         viewModel.state.weatherInfo != null -> {
-                            Column {
-                                MainCard(
-                                    state = viewModel.state
-                                )
-                                Column(
-                                    modifier = Modifier.verticalScroll(
-                                        state = ScrollState(0)
-                                    )
-                                ) {
-                                    WeatherForecastCard(
-                                        state = viewModel.state,
-                                        dayIndex = 0,
-                                        day = "Сегодня"
-                                    )
-                                    WeatherForecastCard(
-                                        state = viewModel.state,
-                                        dayIndex = 1,
-                                        day = "Завтра"
-                                    )
-                                    WeatherForecastCard(
-                                        state = viewModel.state,
-                                        dayIndex = 2,
-                                        day = "Послезавтра"
-                                    )
-                                }
-                            }
+                            Data()
+                        }
+                        viewModel.state.isUpdate -> {
+                            LoadingWeather(text = "Мама, обновляю погоду!")
                         }
                     }
                 }
+            }
+        }
+    }
+
+    @Composable
+    fun LoadingWeather(text: String) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(80.dp),
+                text = text,
+                fontSize = 48.sp,
+                color = BlueDark,
+                textAlign = TextAlign.Center
+            )
+            Image(
+                painter = painterResource(
+                    id = R.drawable.me
+                ),
+                contentDescription = null,
+                modifier = Modifier.clip(RoundedCornerShape(16.dp))
+            )
+            Spacer(
+                modifier = Modifier.padding(
+                    top = 48.dp
+                )
+            )
+            CircularProgressIndicator(
+                color = BlueDark
+            )
+        }
+    }
+
+    @Composable
+    fun Data() {
+        Column {
+            MainCard(
+                state = viewModel.state,
+                viewModel = viewModel
+            )
+            Column(
+                modifier = Modifier.verticalScroll(
+                    state = ScrollState(0)
+                )
+            ) {
+                WeatherForecastCard(
+                    state = viewModel.state,
+                    dayIndex = 0,
+                    day = "Сегодня"
+                )
+                WeatherForecastCard(
+                    state = viewModel.state,
+                    dayIndex = 1,
+                    day = "Завтра"
+                )
+                WeatherForecastCard(
+                    state = viewModel.state,
+                    dayIndex = 2,
+                    day = "Послезавтра"
+                )
             }
         }
     }
