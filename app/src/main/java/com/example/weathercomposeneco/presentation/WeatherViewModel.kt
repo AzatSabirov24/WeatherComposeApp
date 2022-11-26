@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.weathercomposeneco.domain.location.LocationTracker
 import com.example.weathercomposeneco.domain.repositiory.WeatherRepository
 import com.example.weathercomposeneco.domain.util.Resource
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,7 +17,7 @@ class WeatherViewModel @Inject constructor(
     private val locationTracker: LocationTracker
 ) : ViewModel() {
 
-    var state by mutableStateOf(WeatherState())
+    var state by mutableStateOf(WeatherState(isLoading = true))
         private set
 
     fun fetchWeather() {
@@ -28,8 +29,9 @@ class WeatherViewModel @Inject constructor(
             locationTracker.getCurrentLocation()
                 ?.let { location ->
                     when (val result =
-                        repository.fetchWeather(location.latitude, location.longitude)) {
+                        repository.fetchWeather()) {
                         is Resource.Success -> {
+                            delay(2000)
                             state = state.copy(
                                 weatherInfo = result.data,
                                 isLoading = false,

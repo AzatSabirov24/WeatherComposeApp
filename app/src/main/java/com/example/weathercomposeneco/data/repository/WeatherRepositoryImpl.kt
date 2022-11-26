@@ -12,14 +12,14 @@ class WeatherRepositoryImpl @Inject constructor(
 ) : WeatherRepository {
 
     override suspend fun fetchWeather(
-        lat: Double,
-        long: Double
+//        lat: Double,
+//        long: Double
     ): Resource<WeatherInfo> {
         return try {
             Resource.Success(
                 api.fetchWeather(
-                    lat = lat,
-                    long = long
+//                    lat = lat,
+//                    long = long
                 )
                     .toWeatherInfo()
             )
