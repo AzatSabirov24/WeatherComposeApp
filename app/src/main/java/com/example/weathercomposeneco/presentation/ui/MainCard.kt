@@ -1,5 +1,6 @@
 package com.example.weathercomposeneco.presentation.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,15 +13,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weathercomposeneco.presentation.WeatherState
 import com.example.weathercomposeneco.presentation.ui.theme.BlueDark
 import com.example.weathercomposeneco.presentation.ui.theme.BlueLight
 import com.example.weathercomposeneco.presentation.ui.theme.WhiteMain
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
+@SuppressLint("NewApi")
 @Composable
 fun MainCard(
     state: WeatherState,
@@ -42,17 +48,32 @@ fun MainCard(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        modifier = Modifier.padding(
-                            top = 8.dp,
-                            start = 8.dp
-                        ),
-                        text = "Казань",
-                        style = TextStyle(
-                            fontSize = 40.sp
-                        ),
-                        color = BlueDark
-                    )
+                    Column {
+                        Text(
+                            modifier = Modifier.padding(
+                                top = 8.dp,
+                                start = 8.dp
+                            ),
+                            text = "Казань",
+                            style = TextStyle(
+                                fontSize = 40.sp
+                            ),
+                            color = BlueDark
+                        )
+                        Text(
+                            modifier = Modifier.padding(
+                                start = 8.dp
+                            ),
+                            text = LocalDateTime.now()
+                                .format(DateTimeFormatter.ofPattern("HH:mm")),
+                            style = TextStyle(
+                                fontSize = 28.sp,
+                                fontWeight = FontWeight.SemiBold
+                            ),
+                            color = Color.White
+                        )
+                    }
+
                     Image(
                         modifier = Modifier.padding(
                             top = 8.dp,
