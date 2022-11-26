@@ -1,0 +1,114 @@
+package com.example.weathercomposeneco.presentation.ui
+
+import android.Manifest
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.weathercomposeneco.R
+import com.example.weathercomposeneco.data.network.WeatherApi
+import com.example.weathercomposeneco.presentation.App
+import com.example.weathercomposeneco.presentation.WeatherViewModel
+import com.example.weathercomposeneco.presentation.ui.theme.BlueDark
+import com.example.weathercomposeneco.presentation.ui.theme.WeatherComposeNecoTheme
+import javax.inject.Inject
+
+class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var api: WeatherApi
+    private val viewModel: WeatherViewModel by viewModels { (application as App).networkComponent.viewModelFactory() }
+    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (application as App).networkComponent.injectMainActivity(this)
+        permissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) {
+            viewModel.fetchWeather()
+        }
+        permissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+            )
+        )
+        setContent {
+            WeatherComposeNecoTheme {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Image(
+                        painter = painterResource(
+                            id = R.drawable.weather_bg
+                        ),
+                        contentDescription = "app background",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .alpha(0.85f),
+                        contentScale = ContentScale.FillBounds
+                    )
+                    when {
+                        viewModel.state.isLoading -> {
+                            Text(
+                                modifier = Modifier
+                                    .padding(80.dp)
+                                    .align(
+                                        alignment = Alignment.TopCenter
+                                    ),
+                                text = "Мама, привет!",
+                                fontSize = 48.sp,
+                                color = BlueDark,
+                                textAlign = TextAlign.Center
+                            )
+                            CircularProgressIndicator(
+                                modifier = Modifier.align(
+                                    alignment = Alignment.Center
+                                ),
+                                color = BlueDark
+                            )
+                        }
+                        viewModel.state.weatherInfo != null -> {
+                            Column {
+                                MainCard(
+                                    state = viewModel.state
+                                )
+                                WeatherForecastCard(
+                                    state = viewModel.state,
+                                    dayIndex = 0,
+                                    day = "Сегодня"
+                                )
+                                WeatherForecastCard(
+                                    state = viewModel.state,
+                                    dayIndex = 1,
+                                    day = "Завтра"
+                                )
+                                WeatherForecastCard(
+                                    state = viewModel.state,
+                                    dayIndex = 2,
+                                    day = "Послезавтра"
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

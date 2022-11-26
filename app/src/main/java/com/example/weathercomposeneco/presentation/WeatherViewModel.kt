@@ -27,11 +27,11 @@ class WeatherViewModel @Inject constructor(
                 error = null
             )
             locationTracker.getCurrentLocation()
-                ?.let { location ->
+                ?.let {
                     when (val result =
                         repository.fetchWeather()) {
                         is Resource.Success -> {
-                            delay(2000)
+                            delay(1000)
                             state = state.copy(
                                 weatherInfo = result.data,
                                 isLoading = false,

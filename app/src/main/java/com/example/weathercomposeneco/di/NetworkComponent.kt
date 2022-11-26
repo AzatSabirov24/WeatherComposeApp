@@ -1,7 +1,7 @@
 package com.example.weathercomposeneco.di
 
 import android.app.Application
-import com.example.weathercomposeneco.presentation.MainActivity
+import com.example.weathercomposeneco.presentation.ui.MainActivity
 import com.example.weathercomposeneco.presentation.ViewModelFactory
 import dagger.BindsInstance
 import dagger.Component

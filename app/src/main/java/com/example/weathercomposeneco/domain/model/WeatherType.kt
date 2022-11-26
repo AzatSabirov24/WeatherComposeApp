@@ -24,7 +24,7 @@ sealed class WeatherType(
     )
 
     object Overcast : WeatherType(
-        weatherDesc = "Пасмурная погода",
+        weatherDesc = "Пасмурно",
         iconRes = R.drawable.ic_cloudy
     )
 
@@ -34,12 +34,12 @@ sealed class WeatherType(
     )
 
     object DepositingRimeFog : WeatherType(
-        weatherDesc = "Depositing rime fog",
+        weatherDesc = "Туман",
         iconRes = R.drawable.ic_very_cloudy
     )
 
     object LightDrizzle : WeatherType(
-        weatherDesc = "Light drizzle",
+        weatherDesc = "Мелкая изморось",
         iconRes = R.drawable.ic_rainshower
     )
 

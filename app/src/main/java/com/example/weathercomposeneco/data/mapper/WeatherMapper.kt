@@ -58,11 +58,17 @@ fun WeatherDataDto.toWeatherDataMap(): Map<Int, List<WeatherData>> {
             )
         )
     }
-        .groupBy {
-            it.index / 24
+        .groupBy { indexedWeatherData ->
+            val now = LocalDateTime.now()
+            if (now > indexedWeatherData.data.time)
+                indexedWeatherData.index/ 24 - now.hour
+            else
+                indexedWeatherData.index / 24
         }
-        .mapValues {
-            it.value.map { it.data }
+        .mapValues { weatherMap ->
+            weatherMap.value.map {
+                it.data
+            }
         }
 }
 
