@@ -1,6 +1,7 @@
 package com.example.weathercomposeneco.data.mapper
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.example.weathercomposeneco.data.model.WeatherDataDto
 import com.example.weathercomposeneco.data.model.WeatherDto
 import com.example.weathercomposeneco.domain.model.WeatherData
@@ -9,30 +10,6 @@ import com.example.weathercomposeneco.domain.model.WeatherType
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-//fun Weather.toWeatherDomain() =
-//    WeatherInfo(
-//        currentWeather = current.toCurrentDomain(),
-//        location = location.toLocationDomain()
-//    )
-//
-//
-//fun Condition.conditionToDomain() =
-//    ConditionInfo(
-//        icon = icon,
-//        text = text
-//    )
-//
-//fun Current.toCurrentDomain() =
-//    CurrentWeatherInfo(
-//        temperature = tempCelsius.toInt(),
-//        condition = condition.conditionToDomain()
-//    )
-//
-//fun Location.toLocationDomain() =
-//    LocationInfo(
-//        city = city,
-//        localTime = localTime
-//    )
 private data class IndexedWeatherData(
     val index: Int,
     val data: WeatherData
@@ -61,7 +38,7 @@ fun WeatherDataDto.toWeatherDataMap(): Map<Int, List<WeatherData>> {
         .groupBy { indexedWeatherData ->
             val now = LocalDateTime.now()
             if (now > indexedWeatherData.data.time)
-                indexedWeatherData.index/ 24 - now.hour
+                indexedWeatherData.index - 1 / 24 - now.hour
             else
                 indexedWeatherData.index / 24
         }
@@ -77,7 +54,7 @@ fun WeatherDto.toWeatherInfo(): WeatherInfo {
     val weatherDataMap = weatherData.toWeatherDataMap()
     val now = LocalDateTime.now()
     val currentWeatherData = weatherDataMap[0]?.find {
-        val hour = if (now.minute < 30) now.hour else now.hour + 1
+        val hour = now.hour
         it.time.hour == hour
     }
     return WeatherInfo(

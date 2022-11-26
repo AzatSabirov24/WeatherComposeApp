@@ -23,17 +23,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weathercomposeneco.R
-import com.example.weathercomposeneco.data.network.WeatherApi
 import com.example.weathercomposeneco.presentation.App
 import com.example.weathercomposeneco.presentation.WeatherViewModel
 import com.example.weathercomposeneco.presentation.ui.theme.BlueDark
 import com.example.weathercomposeneco.presentation.ui.theme.WeatherComposeNecoTheme
-import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var api: WeatherApi
     private val viewModel: WeatherViewModel by viewModels { (application as App).networkComponent.viewModelFactory() }
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
