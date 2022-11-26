@@ -8,12 +8,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
@@ -100,21 +102,27 @@ class MainActivity : ComponentActivity() {
                                 MainCard(
                                     state = viewModel.state
                                 )
-                                WeatherForecastCard(
-                                    state = viewModel.state,
-                                    dayIndex = 0,
-                                    day = "Сегодня"
-                                )
-                                WeatherForecastCard(
-                                    state = viewModel.state,
-                                    dayIndex = 1,
-                                    day = "Завтра"
-                                )
-                                WeatherForecastCard(
-                                    state = viewModel.state,
-                                    dayIndex = 2,
-                                    day = "Послезавтра"
-                                )
+                                Column(
+                                    modifier = Modifier.verticalScroll(
+                                        state = ScrollState(0)
+                                    )
+                                ) {
+                                    WeatherForecastCard(
+                                        state = viewModel.state,
+                                        dayIndex = 0,
+                                        day = "Сегодня"
+                                    )
+                                    WeatherForecastCard(
+                                        state = viewModel.state,
+                                        dayIndex = 1,
+                                        day = "Завтра"
+                                    )
+                                    WeatherForecastCard(
+                                        state = viewModel.state,
+                                        dayIndex = 2,
+                                        day = "Послезавтра"
+                                    )
+                                }
                             }
                         }
                     }

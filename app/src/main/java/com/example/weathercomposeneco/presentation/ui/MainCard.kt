@@ -70,7 +70,7 @@ fun MainCard(
                                 fontSize = 28.sp,
                                 fontWeight = FontWeight.SemiBold
                             ),
-                            color = Color.White
+                            color = WhiteMain
                         )
                     }
 
