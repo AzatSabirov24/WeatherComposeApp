@@ -6,6 +6,6 @@ import retrofit2.http.Query
 
 interface WeatherApi {
 
-    @GET("v1/forecast?latitude=55.75&longitude=49.13&hourly=temperature_2m,weathercode,relativehumidity_2m,windspeed_10m,pressure_msl")
+    @GET("v1/forecast?latitude=55.796391&longitude=49.108891&hourly=temperature_2m,weathercode,relativehumidity_2m,windspeed_10m,pressure_msl")
     suspend fun fetchWeather(): WeatherDto
 }
