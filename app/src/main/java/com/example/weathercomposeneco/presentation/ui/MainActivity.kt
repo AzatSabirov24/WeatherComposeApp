@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
@@ -30,7 +31,9 @@ import com.example.weathercomposeneco.presentation.ui.theme.WeatherComposeNecoTh
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: WeatherViewModel by viewModels { (application as App).networkComponent.viewModelFactory() }
+    private val viewModel: WeatherViewModel by viewModels {
+        (application as App).networkComponent.viewModelFactory()
+    }
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,23 +65,32 @@ class MainActivity : ComponentActivity() {
                     )
                     when {
                         viewModel.state.isLoading -> {
-                            Text(
-                                modifier = Modifier
-                                    .padding(80.dp)
-                                    .align(
-                                        alignment = Alignment.TopCenter
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .padding(80.dp),
+                                    text = "Мама, привет!",
+                                    fontSize = 48.sp,
+                                    color = BlueDark,
+                                    textAlign = TextAlign.Center
+                                )
+                                Image(
+                                    painter = painterResource(
+                                        id = R.drawable.me
                                     ),
-                                text = "Мама, привет!",
-                                fontSize = 48.sp,
-                                color = BlueDark,
-                                textAlign = TextAlign.Center
-                            )
-                            CircularProgressIndicator(
-                                modifier = Modifier.align(
-                                    alignment = Alignment.Center
-                                ),
-                                color = BlueDark
-                            )
+                                    contentDescription = null,
+                                )
+                                Spacer(
+                                    modifier = Modifier.padding(
+                                        top = 24.dp
+                                    )
+                                )
+                                CircularProgressIndicator(
+                                    color = BlueDark
+                                )
+                            }
                         }
                         viewModel.state.weatherInfo != null -> {
                             Column {

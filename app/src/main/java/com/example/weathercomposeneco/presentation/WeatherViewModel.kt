@@ -31,7 +31,7 @@ class WeatherViewModel @Inject constructor(
                     when (val result =
                         repository.fetchWeather()) {
                         is Resource.Success -> {
-                            delay(1000)
+                            delay(2000)
                             state = state.copy(
                                 weatherInfo = result.data,
                                 isLoading = false,
