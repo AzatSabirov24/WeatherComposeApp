@@ -108,7 +108,9 @@ fun MainCard(
                 ) {
                     IconButton(
                         onClick = {
-                            viewModel.updateWeather()
+                            viewModel.fetchWeather(
+                                isUpdate = true
+                            )
                         }) {
                         Icon(
                             painterResource(
