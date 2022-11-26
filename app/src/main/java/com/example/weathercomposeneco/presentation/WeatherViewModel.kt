@@ -17,15 +17,11 @@ class WeatherViewModel @Inject constructor(
     private val locationTracker: LocationTracker
 ) : ViewModel() {
 
-    var state by mutableStateOf(WeatherState(isLoading = true))
+    var state by mutableStateOf(WeatherState())
         private set
 
     fun fetchWeather() {
         viewModelScope.launch {
-            state = state.copy(
-                isLoading = true,
-                error = null
-            )
             locationTracker.getCurrentLocation()
                 ?.let {
                     when (val result =
