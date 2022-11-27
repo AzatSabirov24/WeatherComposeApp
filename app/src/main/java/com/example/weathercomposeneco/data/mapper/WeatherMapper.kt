@@ -1,7 +1,6 @@
 package com.example.weathercomposeneco.data.mapper
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.example.weathercomposeneco.data.model.WeatherDataDto
 import com.example.weathercomposeneco.data.model.WeatherDto
 import com.example.weathercomposeneco.domain.model.WeatherData
@@ -36,14 +35,10 @@ fun WeatherDataDto.toWeatherDataMap(): Map<Int, List<WeatherData>> {
         )
     }
         .groupBy { indexedWeatherData ->
-            val now = LocalDateTime.now()
-            if (now > indexedWeatherData.data.time)
-                indexedWeatherData.index - 1 / 24 - now.hour
-            else
-                indexedWeatherData.index / 24
+            indexedWeatherData.index / 24
         }
-        .mapValues { weatherMap ->
-            weatherMap.value.map {
+        .mapValues { map ->
+            map.value.map {
                 it.data
             }
         }
@@ -54,7 +49,7 @@ fun WeatherDto.toWeatherInfo(): WeatherInfo {
     val weatherDataMap = weatherData.toWeatherDataMap()
     val now = LocalDateTime.now()
     val currentWeatherData = weatherDataMap[0]?.find {
-        val hour = now.hour
+        val hour = if (now.minute < 30) now.hour else now.hour + 1
         it.time.hour == hour
     }
     return WeatherInfo(
