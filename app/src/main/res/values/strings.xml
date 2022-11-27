@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">WeatherComposeNeco</string>
+    <string name="app_name">WeatherCompose</string>
+    <string name="update_weather">Обновляю погоду!</string>
+    <string name="mom_hello">Мама, привет!</string>
 </resources>
