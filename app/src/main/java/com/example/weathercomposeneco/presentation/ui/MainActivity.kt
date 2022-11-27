@@ -1,6 +1,7 @@
 package com.example.weathercomposeneco.presentation.ui
 
 import android.Manifest
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,8 +12,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -24,7 +27,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,41 +64,95 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             WeatherComposeNecoTheme {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Image(
-                        painter = painterResource(
-                            id = R.drawable.weather_bg
-                        ),
-                        contentDescription = "app background",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .alpha(0.85f),
-                        contentScale = ContentScale.FillBounds
-                    )
-                    when {
-                        viewModel.state.isLoading -> {
-                            LoadingWeather(text = "Мама, привет!")
+                when (LocalConfiguration.current.orientation) {
+                    Configuration.ORIENTATION_PORTRAIT ->
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Image(
+                                painter = painterResource(
+                                    id = R.drawable.weather_bg
+                                ),
+                                contentDescription = "app background",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .alpha(0.85f),
+                                contentScale = ContentScale.FillBounds
+                            )
+                            when {
+                                viewModel.state.isLoading -> {
+                                    LoadingWeather(
+                                        text = stringResource(
+                                            id = R.string.mom_hello
+                                        ),
+                                        image = R.drawable.me
+                                    )
+                                }
+                                viewModel.state.weatherInfo != null -> {
+                                    DataPortrait()
+                                }
+                                viewModel.state.isUpdate -> {
+                                    LoadingWeather(
+                                        text = stringResource(
+                                            id = R.string.update_weather
+                                        ),
+                                        image = R.drawable.me_update
+                                    )
+                                }
+                            }
                         }
-                        viewModel.state.weatherInfo != null -> {
-                            Data()
+                    Configuration.ORIENTATION_LANDSCAPE ->
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Image(
+                                painter = painterResource(
+                                    id = R.drawable.weather_bg
+                                ),
+                                contentDescription = "app background",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .alpha(0.85f),
+                                contentScale = ContentScale.FillBounds
+                            )
+                            when {
+                                viewModel.state.isLoading -> {
+                                    LoadingWeather(
+                                        text = stringResource(
+                                            id = R.string.mom_hello
+                                        ),
+                                        image = R.drawable.me
+                                    )
+                                }
+                                viewModel.state.weatherInfo != null -> {
+                                    DataLandscape()
+                                }
+                                viewModel.state.isUpdate -> {
+                                    LoadingWeather(
+                                        text = stringResource(
+                                            id = R.string.update_weather
+                                        ),
+                                        image = R.drawable.me_update
+                                    )
+                                }
+                            }
                         }
-                        viewModel.state.isUpdate -> {
-                            LoadingWeather(text = "Мама, обновляю погоду!")
-                        }
-                    }
                 }
             }
         }
     }
 
     @Composable
-    fun LoadingWeather(text: String) {
+    fun LoadingWeather(
+        text: String,
+        image: Int
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 modifier = Modifier
-                    .padding(80.dp),
+                    .fillMaxWidth()
+                    .padding(
+                        top = 80.dp,
+                        bottom = 60.dp
+                    ),
                 text = text,
                 fontSize = 48.sp,
                 color = BlueDark,
@@ -101,7 +160,7 @@ class MainActivity : ComponentActivity() {
             )
             Image(
                 painter = painterResource(
-                    id = R.drawable.me
+                    id = image
                 ),
                 contentDescription = null,
                 modifier = Modifier.clip(RoundedCornerShape(16.dp))
@@ -118,33 +177,52 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun Data() {
+    fun DataPortrait() {
         Column {
-            MainCard(
-                state = viewModel.state,
-                viewModel = viewModel
+            WeatherCard(
+                isPortrait = true
             )
-            Column(
-                modifier = Modifier.verticalScroll(
-                    state = ScrollState(0)
-                )
-            ) {
-                WeatherForecastCard(
-                    state = viewModel.state,
-                    dayIndex = 0,
-                    day = "Сегодня"
-                )
-                WeatherForecastCard(
-                    state = viewModel.state,
-                    dayIndex = 1,
-                    day = "Завтра"
-                )
-                WeatherForecastCard(
-                    state = viewModel.state,
-                    dayIndex = 2,
-                    day = "Послезавтра"
-                )
-            }
+        }
+    }
+
+    @Composable
+    fun DataLandscape() {
+        Row {
+            WeatherCard(
+                isPortrait = false
+            )
+        }
+    }
+
+    @Composable
+    fun WeatherCard(
+        isPortrait: Boolean
+    ) {
+        MainCard(
+            state = viewModel.state,
+            viewModel = viewModel,
+            isPortrait = isPortrait
+        )
+        Column(
+            modifier = Modifier.verticalScroll(
+                state = ScrollState(0)
+            )
+        ) {
+            WeatherForecastCard(
+                state = viewModel.state,
+                dayIndex = 0,
+                day = "Сегодня"
+            )
+            WeatherForecastCard(
+                state = viewModel.state,
+                dayIndex = 1,
+                day = "Завтра"
+            )
+            WeatherForecastCard(
+                state = viewModel.state,
+                dayIndex = 2,
+                day = "Послезавтра"
+            )
         }
     }
 }
