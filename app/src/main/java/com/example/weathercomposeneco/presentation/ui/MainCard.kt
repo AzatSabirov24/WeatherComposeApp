@@ -5,9 +5,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -35,103 +37,119 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun MainCard(
     state: WeatherState,
-    viewModel: WeatherViewModel
+    viewModel: WeatherViewModel,
+    isPortrait: Boolean
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
+        modifier = if (isPortrait)
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        else Modifier.width(300.dp).fillMaxHeight().padding(8.dp),
         backgroundColor = BlueLight,
         elevation = 0.dp,
         shape = RoundedCornerShape(10.dp)
     ) {
-        state.weatherInfo?.currentWeatherData?.let { weatherData ->
-            Column(
+        WeatherCard(
+            state = state,
+            viewModel = viewModel
+        )
+    }
+}
+
+@SuppressLint("NewApi")
+@Composable
+fun WeatherCard(
+    state: WeatherState,
+    viewModel: WeatherViewModel,
+) {
+    state.weatherInfo?.currentWeatherData?.let { weatherData ->
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column {
-                        Text(
-                            modifier = Modifier.padding(
-                                top = 8.dp,
-                                start = 8.dp
-                            ),
-                            text = "Казань",
-                            style = TextStyle(
-                                fontSize = 40.sp
-                            ),
-                            color = BlueDark
-                        )
-                        Text(
-                            modifier = Modifier.padding(
-                                start = 8.dp
-                            ),
-                            text = LocalDateTime.now()
-                                .format(DateTimeFormatter.ofPattern("HH:mm")),
-                            style = TextStyle(
-                                fontSize = 28.sp,
-                                fontWeight = FontWeight.SemiBold
-                            ),
-                            color = WhiteMain
-                        )
-                    }
-                    Image(
+                Column {
+                    Text(
                         modifier = Modifier.padding(
                             top = 8.dp,
-                            end = 8.dp
+                            start = 8.dp
                         ),
-                        painter = painterResource(
-                            id = weatherData.weatherType.iconRes
+                        text = "Казань",
+                        style = TextStyle(
+                            fontSize = 40.sp
                         ),
-                        contentDescription = null
+                        color = BlueDark
+                    )
+                    Text(
+                        modifier = Modifier.padding(
+                            start = 8.dp
+                        ),
+                        text = LocalDateTime.now()
+                            .format(DateTimeFormatter.ofPattern("HH:mm")),
+                        style = TextStyle(
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        color = WhiteMain
+                    )
+                }
+                Image(
+                    modifier = Modifier.padding(
+                        top = 8.dp,
+                        end = 8.dp
+                    ),
+                    painter = painterResource(
+                        id = weatherData.weatherType.iconRes
+                    ),
+                    contentDescription = null
+                )
+            }
+            Text(
+                text = "${weatherData.temperatureCelsius}°C",
+                style = TextStyle(
+                    fontSize = 72.sp
+                ),
+                color = BlueDark
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 8.dp,
+                        end = 8.dp
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                IconButton(
+                    onClick = {
+                        viewModel.fetchWeather(
+                            isUpdate = true
+                        )
+                    }) {
+                    Icon(
+                        painterResource(
+                            id = R.drawable.ic_sync_24
+                        ),
+                        contentDescription = "icon search",
+                        Modifier.size(48.dp, 48.dp),
+                        tint = Color.White
                     )
                 }
                 Text(
-                    text = "${weatherData.temperatureCelsius}°C",
+                    text = weatherData.weatherType.weatherDesc,
                     style = TextStyle(
-                        fontSize = 72.sp
+                        fontSize = 32.sp
                     ),
-                    color = BlueDark
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = 8.dp,
-                            end = 8.dp
-                        ),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    IconButton(
-                        onClick = {
-                            viewModel.fetchWeather(
-                                isUpdate = true
-                            )
-                        }) {
-                        Icon(
-                            painterResource(
-                                id = R.drawable.ic_sync_24
-                            ),
-                            contentDescription = "icon search",
-                            Modifier.size(48.dp, 48.dp),
-                            tint = Color.White
-                        )
-                    }
-                    Text(
-                        text = weatherData.weatherType.weatherDesc,
-                        style = TextStyle(
-                            fontSize = 32.sp
-                        ),
-                        color = WhiteMain,
-                        modifier = Modifier.padding(
-                            bottom = 8.dp
-                        )
+                    color = WhiteMain,
+                    modifier = Modifier.padding(
+                        bottom = 8.dp
                     )
-                }
+                )
             }
         }
     }
