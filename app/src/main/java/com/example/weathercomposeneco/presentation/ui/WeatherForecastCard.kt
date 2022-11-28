@@ -1,5 +1,6 @@
 package com.example.weathercomposeneco.presentation.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,15 +18,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weathercomposeneco.presentation.WeatherState
 import com.example.weathercomposeneco.presentation.ui.theme.BlueLight
+import kotlinx.coroutines.flow.StateFlow
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun WeatherForecastCard(
-    state: WeatherState,
+    state: StateFlow<WeatherState>,
     modifier: Modifier = Modifier,
     dayIndex: Int,
     day: String
 ) {
-    state.weatherInfo?.weatherDataPerDay?.get(dayIndex)
+//    state.weatherInfo?.weatherDataPerDay?.get(dayIndex)
+    state.value.weatherInfo?.weatherDataPerDay?.get(dayIndex)
         ?.let { data ->
             Card(
                 modifier = Modifier

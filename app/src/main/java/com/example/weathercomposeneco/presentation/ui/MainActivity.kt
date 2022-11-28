@@ -3,6 +3,7 @@ package com.example.weathercomposeneco.presentation.ui
 import android.Manifest
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
@@ -22,6 +23,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -52,9 +55,9 @@ class MainActivity : ComponentActivity() {
         permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) {
-            viewModel.fetchWeather(
-                isUpdate = false
-            )
+//            viewModel.fetchWeather(
+//                isUpdate = false
+//            )
         }
         permissionLauncher.launch(
             arrayOf(
@@ -64,6 +67,8 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             WeatherComposeNecoTheme {
+                val weatherUiState by viewModel.state.collectAsState()
+                Log.d("weatherUiState", "$weatherUiState")
                 when (LocalConfiguration.current.orientation) {
                     Configuration.ORIENTATION_PORTRAIT ->
                         Box(modifier = Modifier.fillMaxSize()) {
@@ -78,7 +83,7 @@ class MainActivity : ComponentActivity() {
                                 contentScale = ContentScale.FillBounds
                             )
                             when {
-                                viewModel.state.isLoading -> {
+                                weatherUiState.isLoading -> {
                                     LoadingWeather(
                                         text = stringResource(
                                             id = R.string.mom_hello
@@ -86,10 +91,10 @@ class MainActivity : ComponentActivity() {
                                         image = R.drawable.me
                                     )
                                 }
-                                viewModel.state.weatherInfo != null -> {
+                                weatherUiState.weatherInfo != null -> {
                                     DataPortrait()
                                 }
-                                viewModel.state.isUpdate -> {
+                                weatherUiState.isUpdate -> {
                                     LoadingWeather(
                                         text = stringResource(
                                             id = R.string.update_weather
@@ -112,7 +117,7 @@ class MainActivity : ComponentActivity() {
                                 contentScale = ContentScale.FillBounds
                             )
                             when {
-                                viewModel.state.isLoading -> {
+                                weatherUiState.isLoading -> {
                                     LoadingWeather(
                                         text = stringResource(
                                             id = R.string.mom_hello
@@ -120,10 +125,10 @@ class MainActivity : ComponentActivity() {
                                         image = R.drawable.me
                                     )
                                 }
-                                viewModel.state.weatherInfo != null -> {
+                                weatherUiState.weatherInfo != null -> {
                                     DataLandscape()
                                 }
-                                viewModel.state.isUpdate -> {
+                                weatherUiState.isUpdate -> {
                                     LoadingWeather(
                                         text = stringResource(
                                             id = R.string.update_weather

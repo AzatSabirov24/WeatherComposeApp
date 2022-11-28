@@ -29,6 +29,7 @@ import com.example.weathercomposeneco.presentation.WeatherViewModel
 import com.example.weathercomposeneco.presentation.ui.theme.BlueDark
 import com.example.weathercomposeneco.presentation.ui.theme.BlueLight
 import com.example.weathercomposeneco.presentation.ui.theme.WhiteMain
+import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -36,7 +37,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun MainCard(
     modifier: Modifier = Modifier,
-    state: WeatherState,
+    state: StateFlow<WeatherState>,
     viewModel: WeatherViewModel,
     isPortrait: Boolean
 ) {
@@ -59,14 +60,15 @@ fun MainCard(
     }
 }
 
-@SuppressLint("NewApi")
+@SuppressLint("NewApi", "StateFlowValueCalledInComposition")
 @Composable
 fun WeatherCard(
     modifier: Modifier = Modifier,
-    state: WeatherState,
+    state: StateFlow<WeatherState>,
     viewModel: WeatherViewModel,
 ) {
-    state.weatherInfo?.currentWeatherData?.let { weatherData ->
+//    state.weatherInfo?.currentWeatherData?.let { weatherData ->
+    state.value.weatherInfo?.currentWeatherData?.let { weatherData ->
         Column(
             modifier = modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
