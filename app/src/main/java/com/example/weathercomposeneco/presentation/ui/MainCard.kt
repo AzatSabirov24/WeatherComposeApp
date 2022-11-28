@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -36,16 +35,19 @@ import java.time.format.DateTimeFormatter
 @SuppressLint("NewApi")
 @Composable
 fun MainCard(
+    modifier: Modifier = Modifier,
     state: WeatherState,
     viewModel: WeatherViewModel,
     isPortrait: Boolean
 ) {
     Card(
         modifier = if (isPortrait)
-            Modifier
+            modifier
                 .fillMaxWidth()
                 .padding(8.dp)
-        else Modifier.width(300.dp).fillMaxHeight().padding(8.dp),
+        else modifier
+            .fillMaxHeight()
+            .padding(8.dp),
         backgroundColor = BlueLight,
         elevation = 0.dp,
         shape = RoundedCornerShape(10.dp)
@@ -60,22 +62,23 @@ fun MainCard(
 @SuppressLint("NewApi")
 @Composable
 fun WeatherCard(
+    modifier: Modifier = Modifier,
     state: WeatherState,
     viewModel: WeatherViewModel,
 ) {
     state.weatherInfo?.currentWeatherData?.let { weatherData ->
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
                     Text(
-                        modifier = Modifier.padding(
+                        modifier = modifier.padding(
                             top = 8.dp,
                             start = 8.dp
                         ),
@@ -86,7 +89,7 @@ fun WeatherCard(
                         color = BlueDark
                     )
                     Text(
-                        modifier = Modifier.padding(
+                        modifier = modifier.padding(
                             start = 8.dp
                         ),
                         text = LocalDateTime.now()
@@ -99,7 +102,7 @@ fun WeatherCard(
                     )
                 }
                 Image(
-                    modifier = Modifier.padding(
+                    modifier = modifier.padding(
                         top = 8.dp,
                         end = 8.dp
                     ),
@@ -117,7 +120,7 @@ fun WeatherCard(
                 color = BlueDark
             )
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(
                         start = 8.dp,
@@ -136,7 +139,7 @@ fun WeatherCard(
                             id = R.drawable.ic_sync_24
                         ),
                         contentDescription = "icon search",
-                        Modifier.size(48.dp, 48.dp),
+                        modifier.size(48.dp, 48.dp),
                         tint = Color.White
                     )
                 }
@@ -146,7 +149,7 @@ fun WeatherCard(
                         fontSize = 32.sp
                     ),
                     color = WhiteMain,
-                    modifier = Modifier.padding(
+                    modifier = modifier.padding(
                         bottom = 8.dp
                     )
                 )

@@ -99,7 +99,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         }
-                    Configuration.ORIENTATION_LANDSCAPE ->
+                    else ->
                         Box(modifier = Modifier.fillMaxSize()) {
                             Image(
                                 painter = painterResource(
@@ -198,31 +198,65 @@ class MainActivity : ComponentActivity() {
     fun WeatherCard(
         isPortrait: Boolean
     ) {
-        MainCard(
-            state = viewModel.state,
-            viewModel = viewModel,
-            isPortrait = isPortrait
-        )
-        Column(
-            modifier = Modifier.verticalScroll(
-                state = ScrollState(0)
-            )
-        ) {
-            WeatherForecastCard(
+        if (isPortrait) {
+            MainCard(
                 state = viewModel.state,
-                dayIndex = 0,
-                day = "Сегодня"
+                viewModel = viewModel,
+                isPortrait = true
             )
-            WeatherForecastCard(
-                state = viewModel.state,
-                dayIndex = 1,
-                day = "Завтра"
-            )
-            WeatherForecastCard(
-                state = viewModel.state,
-                dayIndex = 2,
-                day = "Послезавтра"
-            )
+            Column(
+                modifier = Modifier.verticalScroll(
+                    state = ScrollState(0)
+                )
+            ) {
+                WeatherForecastCard(
+                    state = viewModel.state,
+                    dayIndex = 0,
+                    day = "Сегодня"
+                )
+                WeatherForecastCard(
+                    state = viewModel.state,
+                    dayIndex = 1,
+                    day = "Завтра"
+                )
+                WeatherForecastCard(
+                    state = viewModel.state,
+                    dayIndex = 2,
+                    day = "Послезавтра"
+                )
+            }
+        } else {
+            Row {
+                MainCard(
+                    Modifier.weight(0.4f),
+                    state = viewModel.state,
+                    viewModel = viewModel,
+                    isPortrait = false
+                )
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(
+                            state = ScrollState(0)
+                        )
+                        .weight(0.6f)
+                ) {
+                    WeatherForecastCard(
+                        state = viewModel.state,
+                        dayIndex = 0,
+                        day = "Сегодня"
+                    )
+                    WeatherForecastCard(
+                        state = viewModel.state,
+                        dayIndex = 1,
+                        day = "Завтра"
+                    )
+                    WeatherForecastCard(
+                        state = viewModel.state,
+                        dayIndex = 2,
+                        day = "Послезавтра"
+                    )
+                }
+            }
         }
     }
 }
