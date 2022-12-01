@@ -1,7 +1,6 @@
 package com.example.weathercomposeneco.presentation.ui
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,8 +22,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -36,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import com.example.weathercomposeneco.R
 import com.example.weathercomposeneco.presentation.App
 import com.example.weathercomposeneco.presentation.WeatherViewModel
@@ -48,17 +44,27 @@ class MainActivity : ComponentActivity() {
     private val viewModel: WeatherViewModel by viewModels {
         (application as App).networkComponent.viewModelFactory()
     }
-    private lateinit var pLauncher: ActivityResultLauncher<String>
+    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (application as App).networkComponent.injectMainActivity(this)
-
-        checkPermission()
+        permissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) {
+            viewModel.fetchWeather(
+                isUpdate = false
+            )
+        }
+        permissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+            )
+        )
 
         setContent {
             WeatherComposeNecoTheme {
-                val weatherUiState by viewModel.state.collectAsState()
                 when (LocalConfiguration.current.orientation) {
                     Configuration.ORIENTATION_PORTRAIT ->
                         Box(modifier = Modifier.fillMaxSize()) {
@@ -73,7 +79,7 @@ class MainActivity : ComponentActivity() {
                                 contentScale = ContentScale.FillBounds
                             )
                             when {
-                                weatherUiState.isLoading -> {
+                                viewModel.state.isLoading -> {
                                     LoadingWeather(
                                         text = stringResource(
                                             id = R.string.mom_hello
@@ -81,10 +87,10 @@ class MainActivity : ComponentActivity() {
                                         image = R.drawable.me
                                     )
                                 }
-                                weatherUiState.weatherInfo != null -> {
+                                viewModel.state.weatherInfo != null -> {
                                     DataPortrait()
                                 }
-                                weatherUiState.isUpdate -> {
+                                viewModel.state.isUpdate -> {
                                     LoadingWeather(
                                         text = stringResource(
                                             id = R.string.update_weather
@@ -107,7 +113,7 @@ class MainActivity : ComponentActivity() {
                                 contentScale = ContentScale.FillBounds
                             )
                             when {
-                                weatherUiState.isLoading -> {
+                                viewModel.state.isLoading -> {
                                     LoadingWeather(
                                         text = stringResource(
                                             id = R.string.mom_hello
@@ -115,10 +121,10 @@ class MainActivity : ComponentActivity() {
                                         image = R.drawable.me
                                     )
                                 }
-                                weatherUiState.weatherInfo != null -> {
+                                viewModel.state.weatherInfo != null -> {
                                     DataLandscape()
                                 }
-                                weatherUiState.isUpdate -> {
+                                viewModel.state.isUpdate -> {
                                     LoadingWeather(
                                         text = stringResource(
                                             id = R.string.update_weather
@@ -253,26 +259,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    private fun checkPermission() {
-        if (!isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            permissionListener()
-            pLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        }
-    }
-
-    private fun permissionListener() {
-        pLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) {
-            viewModel.fetchWeather(false)
-        }
-    }
-
-    private fun isPermissionGranted(permission: String): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this, permission
-        ) == PackageManager.PERMISSION_GRANTED
     }
 }

@@ -18,18 +18,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weathercomposeneco.presentation.WeatherState
 import com.example.weathercomposeneco.presentation.ui.theme.BlueLight
-import kotlinx.coroutines.flow.StateFlow
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun WeatherForecastCard(
-    state: StateFlow<WeatherState>,
+    state: WeatherState,
     modifier: Modifier = Modifier,
     dayIndex: Int,
     day: String
 ) {
-//    state.weatherInfo?.weatherDataPerDay?.get(dayIndex)
-    state.value.weatherInfo?.weatherDataPerDay?.get(dayIndex)
+    state.weatherInfo?.weatherDataPerDay?.get(dayIndex)
         ?.let { data ->
             Card(
                 modifier = Modifier

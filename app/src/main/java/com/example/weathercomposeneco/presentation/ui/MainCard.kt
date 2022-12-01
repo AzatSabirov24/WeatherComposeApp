@@ -29,7 +29,6 @@ import com.example.weathercomposeneco.presentation.WeatherViewModel
 import com.example.weathercomposeneco.presentation.ui.theme.BlueDark
 import com.example.weathercomposeneco.presentation.ui.theme.BlueLight
 import com.example.weathercomposeneco.presentation.ui.theme.WhiteMain
-import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -37,7 +36,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun MainCard(
     modifier: Modifier = Modifier,
-    state: StateFlow<WeatherState>,
+    state: WeatherState,
     viewModel: WeatherViewModel,
     isPortrait: Boolean
 ) {
@@ -64,10 +63,10 @@ fun MainCard(
 @Composable
 fun WeatherCard(
     modifier: Modifier = Modifier,
-    state: StateFlow<WeatherState>,
+    state: WeatherState,
     viewModel: WeatherViewModel,
 ) {
-    state.value.weatherInfo?.currentWeatherData?.let { weatherData ->
+    state.weatherInfo?.currentWeatherData?.let { weatherData ->
         Column(
             modifier = modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
