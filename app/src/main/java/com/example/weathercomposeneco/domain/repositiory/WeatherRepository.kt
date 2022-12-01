@@ -5,5 +5,8 @@ import com.example.weathercomposeneco.domain.util.Resource
 
 interface WeatherRepository {
 
-    suspend fun fetchWeather(): Resource<WeatherInfo>
+    suspend fun fetchWeather(
+        latitude: String,
+        longitude: String
+    ): Resource<WeatherInfo>
 }

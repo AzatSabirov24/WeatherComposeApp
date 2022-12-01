@@ -67,7 +67,6 @@ fun WeatherCard(
     state: StateFlow<WeatherState>,
     viewModel: WeatherViewModel,
 ) {
-//    state.weatherInfo?.currentWeatherData?.let { weatherData ->
     state.value.weatherInfo?.currentWeatherData?.let { weatherData ->
         Column(
             modifier = modifier.fillMaxWidth(),
@@ -84,7 +83,7 @@ fun WeatherCard(
                             top = 8.dp,
                             start = 8.dp
                         ),
-                        text = "Казань",
+                        text = viewModel.cityName.value,
                         style = TextStyle(
                             fontSize = 40.sp
                         ),
