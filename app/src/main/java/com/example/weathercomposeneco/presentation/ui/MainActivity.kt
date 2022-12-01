@@ -1,9 +1,9 @@
 package com.example.weathercomposeneco.presentation.ui
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
@@ -36,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import com.example.weathercomposeneco.R
 import com.example.weathercomposeneco.presentation.App
 import com.example.weathercomposeneco.presentation.WeatherViewModel
@@ -47,20 +48,14 @@ class MainActivity : ComponentActivity() {
     private val viewModel: WeatherViewModel by viewModels {
         (application as App).networkComponent.viewModelFactory()
     }
-    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+    private lateinit var pLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (application as App).networkComponent.injectMainActivity(this)
-        permissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { }
-        permissionLauncher.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-            )
-        )
+
+        checkPermission()
+
         setContent {
             WeatherComposeNecoTheme {
                 val weatherUiState by viewModel.state.collectAsState()
@@ -258,5 +253,26 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun checkPermission() {
+        if (!isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            permissionListener()
+            pLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private fun permissionListener() {
+        pLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) {
+            viewModel.fetchWeather(false)
+        }
+    }
+
+    private fun isPermissionGranted(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this, permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 }
