@@ -54,7 +54,7 @@ sealed class WeatherType(
     )
 
     object LightFreezingDrizzle : WeatherType(
-        weatherDesc = "Slight freezing drizzle",
+        weatherDesc = "Изморозь со снегом",
         iconRes = R.drawable.ic_snowyrainy
     )
 

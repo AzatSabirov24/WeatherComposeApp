@@ -54,11 +54,7 @@ class MainActivity : ComponentActivity() {
         (application as App).networkComponent.injectMainActivity(this)
         permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
-        ) {
-//            viewModel.fetchWeather(
-//                isUpdate = false
-//            )
-        }
+        ) { }
         permissionLauncher.launch(
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -217,17 +213,17 @@ class MainActivity : ComponentActivity() {
                 WeatherForecastCard(
                     state = viewModel.state,
                     dayIndex = 0,
-                    day = "Сегодня"
+                    day = stringResource(R.string.today)
                 )
                 WeatherForecastCard(
                     state = viewModel.state,
                     dayIndex = 1,
-                    day = "Завтра"
+                    day = stringResource(R.string.tomorrow)
                 )
                 WeatherForecastCard(
                     state = viewModel.state,
                     dayIndex = 2,
-                    day = "Послезавтра"
+                    day = stringResource(R.string.day_after_tomorrow)
                 )
             }
         } else {
@@ -248,17 +244,17 @@ class MainActivity : ComponentActivity() {
                     WeatherForecastCard(
                         state = viewModel.state,
                         dayIndex = 0,
-                        day = "Сегодня"
+                        day = stringResource(R.string.today)
                     )
                     WeatherForecastCard(
                         state = viewModel.state,
                         dayIndex = 1,
-                        day = "Завтра"
+                        day = stringResource(R.string.tomorrow)
                     )
                     WeatherForecastCard(
                         state = viewModel.state,
                         dayIndex = 2,
-                        day = "Послезавтра"
+                        day = stringResource(R.string.day_after_tomorrow)
                     )
                 }
             }
