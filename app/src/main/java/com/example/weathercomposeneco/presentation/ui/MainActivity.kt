@@ -64,7 +64,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             WeatherComposeNecoTheme {
                 val weatherUiState by viewModel.state.collectAsState()
-                Log.d("weatherUiState", "$weatherUiState")
                 when (LocalConfiguration.current.orientation) {
                     Configuration.ORIENTATION_PORTRAIT ->
                         Box(modifier = Modifier.fillMaxSize()) {
