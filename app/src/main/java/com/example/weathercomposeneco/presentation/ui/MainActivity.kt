@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -25,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -67,69 +65,48 @@ class MainActivity : ComponentActivity() {
             WeatherComposeNecoTheme {
                 when (LocalConfiguration.current.orientation) {
                     Configuration.ORIENTATION_PORTRAIT ->
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            Image(
-                                painter = painterResource(
-                                    id = R.drawable.weather_bg
-                                ),
-                                contentDescription = "app background",
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .alpha(0.85f),
-                                contentScale = ContentScale.FillBounds
-                            )
-                            when {
-                                viewModel.state.isLoading -> {
-                                    LoadingWeather(
-                                        text = stringResource(
-                                            id = R.string.loading_weather
-                                        )
-                                    )
-                                }
-                                viewModel.state.weatherInfo != null -> {
-                                    DataPortrait()
-                                }
-                                viewModel.state.isUpdate -> {
-                                    LoadingWeather(
-                                        text = stringResource(
-                                            id = R.string.update_weather
-                                        )
-                                    )
-                                }
-                            }
+                        Screen {
+                            DataPortrait()
                         }
                     else ->
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            Image(
-                                painter = painterResource(
-                                    id = R.drawable.weather_bg
-                                ),
-                                contentDescription = "app background",
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .alpha(0.85f),
-                                contentScale = ContentScale.FillBounds
-                            )
-                            when {
-                                viewModel.state.isLoading -> {
-                                    LoadingWeather(
-                                        text = stringResource(
-                                            id = R.string.loading_weather
-                                        )
-                                    )
-                                }
-                                viewModel.state.weatherInfo != null -> {
-                                    DataLandscape()
-                                }
-                                viewModel.state.isUpdate -> {
-                                    LoadingWeather(
-                                        text = stringResource(
-                                            id = R.string.update_weather
-                                        )
-                                    )
-                                }
-                            }
+                        Screen {
+                            DataLandscape()
                         }
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun Screen(data: @Composable () -> Unit) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Image(
+                painter = painterResource(
+                    id = R.drawable.weather_bg
+                ),
+                contentDescription = "app background",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .alpha(0.85f),
+                contentScale = ContentScale.FillBounds
+            )
+            when {
+                viewModel.state.isLoading -> {
+                    LoadingWeather(
+                        text = stringResource(
+                            id = R.string.loading_weather
+                        )
+                    )
+                }
+                viewModel.state.weatherInfo != null -> {
+                    data()
+                }
+                viewModel.state.isUpdate -> {
+                    LoadingWeather(
+                        text = stringResource(
+                            id = R.string.update_weather
+                        )
+                    )
                 }
             }
         }
