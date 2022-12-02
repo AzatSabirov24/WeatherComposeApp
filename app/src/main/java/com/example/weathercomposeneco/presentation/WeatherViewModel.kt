@@ -58,7 +58,7 @@ class WeatherViewModel @Inject constructor(
                             state = state.copy(
                                 weatherInfo = null,
                                 isLoading = false,
-                                error = result.errorMessage
+                                error = "Проблемы с интернетом"
                             )
                         }
                     }
