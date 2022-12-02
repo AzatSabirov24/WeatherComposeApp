@@ -82,9 +82,8 @@ class MainActivity : ComponentActivity() {
                                 viewModel.state.isLoading -> {
                                     LoadingWeather(
                                         text = stringResource(
-                                            id = R.string.mom_hello
-                                        ),
-                                        image = R.drawable.me
+                                            id = R.string.loading_weather
+                                        )
                                     )
                                 }
                                 viewModel.state.weatherInfo != null -> {
@@ -94,8 +93,7 @@ class MainActivity : ComponentActivity() {
                                     LoadingWeather(
                                         text = stringResource(
                                             id = R.string.update_weather
-                                        ),
-                                        image = R.drawable.me_update
+                                        )
                                     )
                                 }
                             }
@@ -116,9 +114,8 @@ class MainActivity : ComponentActivity() {
                                 viewModel.state.isLoading -> {
                                     LoadingWeather(
                                         text = stringResource(
-                                            id = R.string.mom_hello
-                                        ),
-                                        image = R.drawable.me
+                                            id = R.string.loading_weather
+                                        )
                                     )
                                 }
                                 viewModel.state.weatherInfo != null -> {
@@ -128,8 +125,7 @@ class MainActivity : ComponentActivity() {
                                     LoadingWeather(
                                         text = stringResource(
                                             id = R.string.update_weather
-                                        ),
-                                        image = R.drawable.me_update
+                                        )
                                     )
                                 }
                             }
@@ -141,8 +137,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun LoadingWeather(
-        text: String,
-        image: Int
+        text: String
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -158,13 +153,6 @@ class MainActivity : ComponentActivity() {
                 fontSize = 48.sp,
                 color = BlueDark,
                 textAlign = TextAlign.Center
-            )
-            Image(
-                painter = painterResource(
-                    id = image
-                ),
-                contentDescription = null,
-                modifier = Modifier.clip(RoundedCornerShape(16.dp))
             )
             Spacer(
                 modifier = Modifier.padding(
