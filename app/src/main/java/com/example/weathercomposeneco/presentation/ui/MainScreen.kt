@@ -1,8 +1,6 @@
 package com.example.weathercomposeneco.presentation.ui
 
 import android.app.Activity
-import android.content.Intent
-import android.provider.Settings
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
@@ -71,9 +69,13 @@ fun MainScreen(
                     Button(
                         onClick = {
                             if (viewModel.state.error != null)
-                                Toast.makeText(activity, "Нужен доступ к геолокации", Toast.LENGTH_SHORT)
+                                Toast.makeText(
+                                    activity,
+                                    "Нужен доступ к геолокации",
+                                    Toast.LENGTH_SHORT
+                                )
                                     .show()
-                                viewModel.fetchWeather(isUpdate = false)
+                            viewModel.fetchWeather(isUpdate = false)
                         },
                         modifier = Modifier.align(Alignment.Center),
                         content = {
