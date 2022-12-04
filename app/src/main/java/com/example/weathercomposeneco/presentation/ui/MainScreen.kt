@@ -1,6 +1,9 @@
 package com.example.weathercomposeneco.presentation.ui
 
 import android.app.Activity
+import android.content.Intent
+import android.provider.Settings
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
@@ -11,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.example.weathercomposeneco.R
 import com.example.weathercomposeneco.presentation.WeatherViewModel
 import com.example.weathercomposeneco.presentation.ui.theme.BlueDark
+import com.example.weathercomposeneco.presentation.ui.theme.WhiteMain
 
 @Composable
 fun MainScreen(
@@ -61,6 +67,24 @@ fun MainScreen(
                     ErrorDialog(
                         viewModel = viewModel,
                         activity = activity
+                    )
+                    Button(
+                        onClick = {
+                            if (viewModel.state.error != null)
+                                Toast.makeText(activity, "Нужен доступ к геолокации", Toast.LENGTH_SHORT)
+                                    .show()
+                                viewModel.fetchWeather(isUpdate = false)
+                        },
+                        modifier = Modifier.align(Alignment.Center),
+                        content = {
+                            Text(
+                                text = stringResource(id = R.string.to_update_weather),
+                                color = WhiteMain,
+                                fontSize = 24.sp
+                            )
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = BlueDark),
+                        elevation = null
                     )
                 }
             }

@@ -2,9 +2,10 @@
     <string name="app_name">WeatherCompose</string>
     <string name="loading_weather">Загрузка</string>
     <string name="update_weather">Обновление</string>
+    <string name="to_update_weather">Обновить</string>
     <string name="today">Сегодня</string>
     <string name="tomorrow">Завтра</string>
     <string name="day_after_tomorrow">Послезавтра</string>
-    <string name="ok">Ok</string>
+    <string name="provide">Предоставлю</string>
     <string name="error">Ошибка</string>
 </resources>

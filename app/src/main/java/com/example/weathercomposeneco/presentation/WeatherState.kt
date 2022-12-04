@@ -6,5 +6,5 @@ data class WeatherState(
     val weatherInfo: WeatherInfo? = null,
     val isLoading: Boolean = true,
     val isUpdate: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
 )

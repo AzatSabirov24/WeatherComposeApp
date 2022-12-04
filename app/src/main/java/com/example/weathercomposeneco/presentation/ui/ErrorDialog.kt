@@ -40,7 +40,7 @@ fun ErrorDialog(
                         activity.startActivity(intent)
                     }
                 ) {
-                    Text(stringResource(id = R.string.ok))
+                    Text(stringResource(id = R.string.provide))
                 }
             }
         )
