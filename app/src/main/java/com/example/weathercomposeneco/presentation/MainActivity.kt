@@ -28,9 +28,10 @@ class MainActivity : ComponentActivity() {
         permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) {
-            viewModel.fetchWeather(
-                isUpdate = false
-            )
+            if (viewModel.state.weatherInfo == null)
+                viewModel.fetchWeather(
+                    isUpdate = false
+                )
         }
         permissionLauncher.launch(
             arrayOf(
