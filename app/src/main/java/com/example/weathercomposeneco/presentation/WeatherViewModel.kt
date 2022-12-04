@@ -7,9 +7,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.weathercomposeneco.R
 import com.example.weathercomposeneco.domain.location.LocationTracker
 import com.example.weathercomposeneco.domain.repositiory.WeatherRepository
 import com.example.weathercomposeneco.domain.util.Resource
+import com.example.weathercomposeneco.utils.resourceprovider.ResourceProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +22,8 @@ import javax.inject.Inject
 class WeatherViewModel @Inject constructor(
     private val repository: WeatherRepository,
     private val locationTracker: LocationTracker,
-    private val applicationContext: Application
+    private val applicationContext: Application,
+    private val resourceProvider: ResourceProvider
 ) : ViewModel() {
 
     var state by mutableStateOf(WeatherState())
@@ -58,14 +61,14 @@ class WeatherViewModel @Inject constructor(
                             state = state.copy(
                                 weatherInfo = null,
                                 isLoading = false,
-                                error = "Проблемы с интернетом"
+                                error = resourceProvider.string(R.string.internet_problems)
                             )
                         }
                     }
                 } ?: kotlin.run {
                 state = state.copy(
                     isLoading = false,
-                    error = "Нужно разрешение на отслеживание местоположения"
+                    error = resourceProvider.string(R.string.need_geolocation_access)
                 )
             }
         }

@@ -1,8 +1,10 @@
 package com.example.weathercomposeneco.di
 
 import android.app.Application
+import android.content.Context
 import com.example.weathercomposeneco.presentation.MainActivity
 import com.example.weathercomposeneco.presentation.ViewModelFactory
+import com.example.weathercomposeneco.utils.resourceprovider.ResourceProvider
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,7 +17,8 @@ import javax.inject.Singleton
         RepositoryModule::class,
         ViewModelModule::class,
         FusedLocationModule::class,
-        LocationModule::class
+        LocationModule::class,
+        ResourceProviderModule::class
     ]
 )
 @Singleton
@@ -30,7 +33,9 @@ interface MainComponent {
 
         fun app(
             @BindsInstance
-            app: Application
+            app: Application,
+            @BindsInstance
+            context: Context
         ): MainComponent
     }
 }
