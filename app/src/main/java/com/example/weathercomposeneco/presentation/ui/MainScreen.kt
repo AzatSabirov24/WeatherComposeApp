@@ -1,5 +1,6 @@
 package com.example.weathercomposeneco.presentation.ui
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
@@ -29,7 +30,8 @@ import com.example.weathercomposeneco.presentation.ui.theme.BlueDark
 @Composable
 fun MainScreen(
     data: @Composable () -> Unit,
-    viewModel: WeatherViewModel
+    viewModel: WeatherViewModel,
+    activity: Activity
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -56,7 +58,10 @@ fun MainScreen(
                     )
                 )
                 error != null -> {
-                    ErrorDialog(viewModel)
+                    ErrorDialog(
+                        viewModel = viewModel,
+                        activity = activity
+                    )
                 }
             }
         }

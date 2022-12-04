@@ -1,5 +1,8 @@
 package com.example.weathercomposeneco.presentation.ui
 
+import android.app.Activity
+import android.content.Intent
+import android.provider.Settings
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -14,7 +17,8 @@ import com.example.weathercomposeneco.presentation.WeatherViewModel
 
 @Composable
 fun ErrorDialog(
-    viewModel: WeatherViewModel
+    viewModel: WeatherViewModel,
+    activity: Activity
 ) {
     val openDialog = remember { mutableStateOf(true) }
     if (openDialog.value) {
@@ -31,7 +35,10 @@ fun ErrorDialog(
             confirmButton = {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { openDialog.value = false }
+                    onClick = {
+                        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                        activity.startActivity(intent)
+                    }
                 ) {
                     Text(stringResource(id = R.string.ok))
                 }

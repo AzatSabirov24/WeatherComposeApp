@@ -49,7 +49,8 @@ class MainActivity : ComponentActivity() {
                                     viewModel = viewModel
                                 )
                             },
-                            viewModel = viewModel
+                            viewModel = viewModel,
+                            activity = this
                         )
                     else ->
                         MainScreen(
@@ -58,7 +59,8 @@ class MainActivity : ComponentActivity() {
                                     viewModel = viewModel
                                 )
                             },
-                            viewModel = viewModel
+                            viewModel = viewModel,
+                            activity = this
                         )
                 }
                 BackHandler {
