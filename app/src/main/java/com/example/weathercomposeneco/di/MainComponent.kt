@@ -19,7 +19,7 @@ import javax.inject.Singleton
     ]
 )
 @Singleton
-interface NetworkComponent {
+interface MainComponent {
 
     fun injectMainActivity(activity: MainActivity)
 
@@ -31,6 +31,6 @@ interface NetworkComponent {
         fun app(
             @BindsInstance
             app: Application
-        ): NetworkComponent
+        ): MainComponent
     }
 }

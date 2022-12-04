@@ -18,13 +18,13 @@ import com.example.weathercomposeneco.presentation.ui.theme.WeatherComposeNecoTh
 class MainActivity : ComponentActivity() {
 
     private val viewModel: WeatherViewModel by viewModels {
-        (application as App).networkComponent.viewModelFactory()
+        (application as App).mainComponent.viewModelFactory()
     }
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (application as App).networkComponent.injectMainActivity(this)
+        (application as App).mainComponent.injectMainActivity(this)
         permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) {

@@ -8,4 +8,5 @@
     <string name="day_after_tomorrow">Послезавтра</string>
     <string name="provide">Предоставлю</string>
     <string name="error">Ошибка</string>
+    <string name="need_geolocation_access">Нужен доступ к геолокации</string>
 </resources>
