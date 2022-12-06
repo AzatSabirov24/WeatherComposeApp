@@ -1,6 +1,7 @@
 package com.example.weathercomposeneco.presentation.ui
 
 import android.annotation.SuppressLint
+import android.graphics.Paint.Align
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weathercomposeneco.R
@@ -126,7 +128,8 @@ fun WeatherCard(
                         start = 8.dp,
                         end = 8.dp
                     ),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Bottom
             ) {
                 IconButton(
                     onClick = {
@@ -140,7 +143,8 @@ fun WeatherCard(
                         ),
                         contentDescription = "icon search",
                         modifier.size(48.dp, 48.dp),
-                        tint = Color.White
+                        tint = Color.White,
+
                     )
                 }
                 Text(
@@ -149,9 +153,11 @@ fun WeatherCard(
                         fontSize = 32.sp
                     ),
                     color = WhiteMain,
-                    modifier = modifier.padding(
-                        bottom = 8.dp
-                    )
+                    modifier = modifier
+                        .padding(
+                            bottom = 8.dp
+                        ),
+                    textAlign = TextAlign.End
                 )
             }
         }
