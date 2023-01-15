@@ -12,6 +12,8 @@ import com.example.weathercomposeneco.domain.location.LocationTracker
 import com.example.weathercomposeneco.domain.repositiory.WeatherRepository
 import com.example.weathercomposeneco.domain.util.Resource
 import com.example.weathercomposeneco.utils.resourceprovider.ResourceProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,13 +34,11 @@ class WeatherViewModel @Inject constructor(
     val cityName: StateFlow<String> = _cityName.asStateFlow()
 
     fun fetchWeather(isUpdate: Boolean) {
-        viewModelScope.launch {
+        launchInScope {
             state = state.copy(
                 weatherInfo = null,
                 isUpdate = isUpdate
             )
-        }
-        viewModelScope.launch {
             locationTracker.getCurrentLocation()
                 ?.let {
                     _cityName.value = getCityName(
@@ -71,6 +71,12 @@ class WeatherViewModel @Inject constructor(
                     error = resourceProvider.string(R.string.need_geolocation_access)
                 )
             }
+        }
+    }
+
+    private fun launchInScope(block: suspend CoroutineScope.() -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            block()
         }
     }
 
